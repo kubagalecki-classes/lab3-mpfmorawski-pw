@@ -4,17 +4,12 @@
 class Figura
 {
 public:
-    void   setPole(double);
     double getPole() const;
 
-private:
+protected:
     double pole;
 };
 
-void Figura::setPole(double p)
-{
-    pole = p;
-}
 double Figura::getPole() const
 {
     return pole;
@@ -23,15 +18,15 @@ double Figura::getPole() const
 class Kwadrat : public Figura
 {
 public:
-    Kwadrat() { setPole(0); }
-    Kwadrat(double a) { setPole(a * a); }
+    Kwadrat() { pole = 0.; }
+    Kwadrat(double a) { pole = a * a; }
 };
 
 class Kolo : public Figura
 {
 public:
-    Kolo() { setPole(0); }
-    Kolo(double r) { setPole(M_PI * r * r); }
+    Kolo() { pole = 0.; }
+    Kolo(double r) { pole = M_PI * r * r; }
 };
 
 int main()
