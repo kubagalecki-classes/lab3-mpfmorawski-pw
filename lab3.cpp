@@ -8,11 +8,18 @@ public:
     Figura(double p) : pole{p} { std::cout << "Konstruktor parametryczny - Figura" << std::endl; }
     ~Figura() { std::cout << "Destruktor - Figura" << std::endl; }
 
+    void id();
+
     double getPole() const;
 
 private:
     double pole;
 };
+
+void Figura::id()
+{
+    std::cout << "Typ: Figura,  Pole: " << pole << std::endl;
+}
 
 double Figura::getPole() const
 {
@@ -28,7 +35,14 @@ public:
         std::cout << "Konstruktor parametryczny - Kwadrat" << std::endl;
     }
     ~Kwadrat() { std::cout << "Destruktor - Kwadrat" << std::endl; }
+
+    void id();
 };
+
+void Kwadrat::id()
+{
+    std::cout << "Typ: Kwadrat,  Pole: " << getPole() << std::endl;
+}
 
 class Kolo : public Figura
 {
@@ -39,12 +53,21 @@ public:
         std::cout << "Konstruktor parametryczny - Kolo" << std::endl;
     }
     ~Kolo() { std::cout << "Destruktor - Kolo" << std::endl; }
+
+    void id();
 };
+
+void Kolo::id()
+{
+    std::cout << "Typ: Kolo,  Pole: " << getPole() << std::endl;
+}
 
 int main()
 {
+    Figura figura{18};
+    figura.id();
     Kwadrat kwadrat{8};
-    std::cout << kwadrat.getPole() << std::endl;
+    kwadrat.id();
     Kolo kolo{1};
-    std::cout << kolo.getPole() << std::endl;
+    kolo.id();
 }
