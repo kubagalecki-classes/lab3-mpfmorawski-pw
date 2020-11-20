@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 
 class Figura
 {
@@ -19,9 +20,24 @@ double Figura::getPole() const
     return pole;
 }
 
+class Kwadrat : public Figura
+{
+public:
+    Kwadrat() { setPole(0); }
+    Kwadrat(double a) { setPole(a * a); }
+};
+
+class Kolo : public Figura
+{
+public:
+    Kolo() { setPole(0); }
+    Kolo(double r) { setPole(M_PI * r * r); }
+};
+
 int main()
 {
-    Figura figura1;
-    figura1.setPole(4);
-    std::cout << figura1.getPole() << std::endl;
+    Kwadrat kwadrat{8};
+    std::cout << kwadrat.getPole() << std::endl;
+    Kolo kolo{1};
+    std::cout << kolo.getPole() << std::endl;
 }
