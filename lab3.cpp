@@ -103,47 +103,51 @@ public:
     ~WektorFigur()
     {
         std::cout << "Destruktor - Wektor figur" << std::endl;
-        if (wektor_figur != nullptr)
+        if (*wektor_figur != nullptr) {
+            for (int i = 0; i < counter; i++)
+                delete wektor_figur[i];
             delete[] wektor_figur;
+        }
 
         // for (int i = 0; i < counter; i++)
         //     delete &wektor_figur[i];
     }
 
-    void    push(const Figura&);
+    void    push(Figura*);
     Figura* operator[](int) const;
 
 private:
     Figura** wektor_figur;
-    int     counter;
+    int      counter;
 };
 
 Figura* WektorFigur::operator[](int i) const
 {
     if (i < counter)
-        return &wektor_figur[i];
+        return wektor_figur[i];
     else
         return nullptr;
 }
 
-void WektorFigur::push(const Figura& fig)
+void WektorFigur::push(Figura* fig)
 {
     wektor_figur[counter] = fig;
     counter++;
 }
+
+
 
 /* KONIEC WEKTOR FIGUR */
 
 int main()
 {
     WektorFigur wektor;
-    {
-        Kwadrat kwadrat{4};
-        Kolo    kolo{3};
 
-        wektor.push(kwadrat);
-        wektor.push(kolo);
-    }
+    Kwadrat* kwptr = new Kwadrat{4};
+    Kolo*    koptr = new Kolo{3};
+
+    wektor.push(kwptr);
+    wektor.push(koptr);
 
     wektor[0]->id();
     wektor[1]->id();
