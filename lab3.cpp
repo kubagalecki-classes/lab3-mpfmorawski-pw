@@ -92,6 +92,7 @@ void id(const Figura& figura)
 }
 
 /* WEKTOR FIGUR */
+
 class WektorFigur
 {
 public:
@@ -146,21 +147,40 @@ void WektorFigur::pop()
 
 /* KONIEC WEKTOR FIGUR */
 
+/* FABRYKA FIGUR */
+
+class FabrykaFigur
+{
+public:
+    Figura* operator()(const std::string&, double);
+};
+
+Figura* FabrykaFigur::operator()(const std::string& nazwa, double wymiar)
+{
+    if (nazwa == "kwadrat")
+        return (new Kwadrat{wymiar});
+    else if (nazwa == "kolo")
+        return (new Kolo{wymiar});
+    else
+        return nullptr;
+}
+
+/* KONIEC FABRYKA FIGUR */
+
 int main()
 {
-    WektorFigur wektor;
+    WektorFigur  wektor;
+    FabrykaFigur ff;
 
-    Kwadrat* kwad1ptr = new Kwadrat{4};
-    Kolo*    kolo1ptr = new Kolo{3};
-    Kwadrat* kwad2ptr = new Kwadrat{2};
-
-    wektor.push(kwad1ptr);
-    wektor.push(kolo1ptr);
+    wektor.push(ff("kwadrat", 4));
+    wektor.push(ff("kolo", 3));
     wektor.pop();
-    wektor.push(kwad2ptr);
+    wektor.push(ff("kwadrat", 2));
+    wektor.push(ff("kolo", 1));
 
     wektor[0]->id();
     wektor[1]->id();
+    wektor[2]->id();
 }
 
 /* Po uruchomieniu otrzymano:
@@ -169,15 +189,20 @@ int main()
   Konstruktor parametryczny - Kwadrat
   Konstruktor parametryczny - Figura
   Konstruktor parametryczny - Kolo
-  Konstruktor parametryczny - Figura
-  Konstruktor parametryczny - Kwadrat
   Destruktor - Kolo
   Destruktor - Figura
+  Konstruktor parametryczny - Figura
+  Konstruktor parametryczny - Kwadrat
+  Konstruktor parametryczny - Figura
+  Konstruktor parametryczny - Kolo
   Typ: Kwadrat,  Pole: 16
   Typ: Kwadrat,  Pole: 4
+  Typ: Kolo,  Pole: 3.14159
   Destruktor - Wektor figur
   Destruktor - Kwadrat
   Destruktor - Figura
   Destruktor - Kwadrat
+  Destruktor - Figura
+  Destruktor - Kolo
   Destruktor - Figura
 */
