@@ -174,6 +174,15 @@ Figura* FabrykaFigur::operator()(const std::string& nazwa, double wymiar)
 
 /* KONIEC FABRYKA FIGUR */
 
+/* WIZYTATOR FIGUR BAZA */
+
+class WizytatorFigurBaza
+{
+public:
+    virtual void wizytuj(Kwadrat&) = 0;
+    virtual void wizytuj(Kolo&)    = 0;
+};
+
 int main()
 {
     WektorFigur  wektor;
