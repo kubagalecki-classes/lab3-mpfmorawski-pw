@@ -3,6 +3,37 @@
 
 const int SIZE = 5;
 
+class WizytatorFigurBaza;
+class WizytatorDrukujacy;
+class BytGeometryczny;
+class Figura;
+class Kwadrat;
+class Kolo;
+class WektorFigur;
+class FabrykaFigur;
+
+/* WIZYTATOR FIGUR BAZA */
+
+class WizytatorFigurBaza
+{
+public:
+    virtual void wizytuj(Kwadrat&) = 0;
+    virtual void wizytuj(Kolo&)    = 0;
+};
+
+/* KONIEC WIZYTATOR FIGUR BAZA */
+
+/* WIZYTATOR DRUKUJĄCY */
+
+class WizytatorDrukujacy : WizytatorFigurBaza
+{
+public:
+    virtual void wizytuj(Kwadrat&) { std::cout << "Wiz. Drukujacy: To jest Kwadrat." << std::endl; }
+    virtual void wizytuj(Kolo&) { std::cout << "Wiz. Drukujacy: To jest Kolo." << std::endl; }
+};
+
+/* WIZYTATOR DRUKUJĄCY */
+
 /* BYT GEOMETRYCZNY */
 
 class BytGeometryczny
@@ -22,7 +53,9 @@ public:
     Figura(double p) : pole{p} { std::cout << "Konstruktor parametryczny - Figura" << std::endl; }
     virtual ~Figura() { std::cout << "Destruktor - Figura" << std::endl; }
 
-    virtual void id() const;
+    virtual void id() const override;
+    virtual void akceptuj(WizytatorFigurBaza&) = 0;
+    virtual void akceptuj(WizytatorDrukujacy&) = 0;
 
     double getPole() const;
 
@@ -55,11 +88,23 @@ public:
     virtual ~Kwadrat() { std::cout << "Destruktor - Kwadrat" << std::endl; }
 
     void id() const override;
+    void akceptuj(WizytatorFigurBaza&) override;
+    void akceptuj(WizytatorDrukujacy&) override;
 };
 
 void Kwadrat::id() const
 {
     std::cout << "Typ: Kwadrat,  Pole: " << getPole() << std::endl;
+}
+
+void Kwadrat::akceptuj(WizytatorFigurBaza& v)
+{
+    v.wizytuj(*this);
+}
+
+void Kwadrat::akceptuj(WizytatorDrukujacy& v)
+{
+    v.wizytuj(*this);
 }
 
 /* KONIEC KWADRAT */
@@ -77,11 +122,23 @@ public:
     virtual ~Kolo() { std::cout << "Destruktor - Kolo" << std::endl; }
 
     void id() const override;
+    void akceptuj(WizytatorFigurBaza&) override;
+    void akceptuj(WizytatorDrukujacy&) override;
 };
 
 void Kolo::id() const
 {
     std::cout << "Typ: Kolo,  Pole: " << getPole() << std::endl;
+}
+
+void Kolo::akceptuj(WizytatorFigurBaza& v)
+{
+    v.wizytuj(*this);
+}
+
+void Kolo::akceptuj(WizytatorDrukujacy& v)
+{
+    v.wizytuj(*this);
 }
 
 /* KONIEC KOLO */
@@ -118,6 +175,8 @@ public:
     void    pop();
     Figura* operator[](int) const;
     void    idWszystkie();
+    void    wizytujWszystkie(WizytatorFigurBaza&);
+    void    wizytujOrazDrukujWszystkie(WizytatorDrukujacy&);
 
 private:
     Figura** wektor_figur;
@@ -152,6 +211,18 @@ void WektorFigur::idWszystkie()
         wektor_figur[i]->id();
 }
 
+void WektorFigur::wizytujWszystkie(WizytatorFigurBaza& v)
+{
+    for (int i = 0; i < counter; i++)
+        wektor_figur[i]->akceptuj(v);
+}
+
+void WektorFigur::wizytujOrazDrukujWszystkie(WizytatorDrukujacy& v)
+{
+    for (int i = 0; i < counter; i++)
+        wektor_figur[i]->akceptuj(v);
+}
+
 /* KONIEC WEKTOR FIGUR */
 
 /* FABRYKA FIGUR */
@@ -174,53 +245,39 @@ Figura* FabrykaFigur::operator()(const std::string& nazwa, double wymiar)
 
 /* KONIEC FABRYKA FIGUR */
 
-/* WIZYTATOR FIGUR BAZA */
-
-class WizytatorFigurBaza
-{
-public:
-    virtual void wizytuj(Kwadrat&) = 0;
-    virtual void wizytuj(Kolo&)    = 0;
-};
-
 int main()
 {
-    WektorFigur  wektor;
-    FabrykaFigur ff;
+    WektorFigur        wektor;
+    FabrykaFigur       ff;
+    WizytatorDrukujacy wd;
 
     wektor.push(ff("kwadrat", 4));
-    wektor.idWszystkie();
     wektor.push(ff("kolo", 3));
-    wektor.idWszystkie();
     wektor.pop();
-    wektor.idWszystkie();
     wektor.push(ff("kwadrat", 2));
-    wektor.idWszystkie();
     wektor.push(ff("kolo", 1));
     wektor.idWszystkie();
+    wektor.wizytujOrazDrukujWszystkie(wd);
 }
 
 /* Po uruchomieniu otrzymano:
   Konstruktor domyslny - Wektor figur
   Konstruktor parametryczny - Figura
   Konstruktor parametryczny - Kwadrat
-  Typ: Kwadrat,  Pole: 16
   Konstruktor parametryczny - Figura
   Konstruktor parametryczny - Kolo
-  Typ: Kwadrat,  Pole: 16
-  Typ: Kolo,  Pole: 28.2743
   Destruktor - Kolo
   Destruktor - Figura
-  Typ: Kwadrat,  Pole: 16
   Konstruktor parametryczny - Figura
   Konstruktor parametryczny - Kwadrat
-  Typ: Kwadrat,  Pole: 16
-  Typ: Kwadrat,  Pole: 4
   Konstruktor parametryczny - Figura
   Konstruktor parametryczny - Kolo
   Typ: Kwadrat,  Pole: 16
   Typ: Kwadrat,  Pole: 4
   Typ: Kolo,  Pole: 3.14159
+  Wiz. Drukujacy: To jest Kwadrat.
+  Wiz. Drukujacy: To jest Kwadrat.
+  Wiz. Drukujacy: To jest Kolo.
   Destruktor - Wektor figur
   Destruktor - Kwadrat
   Destruktor - Figura
