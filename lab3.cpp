@@ -128,7 +128,7 @@ int main()
     WektorFigur wektor;
 }
 
-/* Po uruchomieniu otrzymanp:
+/* Po uruchomieniu otrzymano: 
   Konstruktor domyslny - Wektor figur
   Konstruktor domyslny - Figura
   Konstruktor domyslny - Figura
