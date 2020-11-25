@@ -1,11 +1,19 @@
 #include <iostream>
 #include <math.h>
 
+const int SIZE = 5;
+
+/* BYT GEOMETRYCZNY */
+
 class BytGeometryczny
 {
 public:
     virtual void id() const = 0;
 };
+
+/* KONIEC BYT GEOMETRYCZNY */
+
+/* FIGURA */
 
 class Figura : public BytGeometryczny
 {
@@ -32,6 +40,10 @@ double Figura::getPole() const
     return pole;
 }
 
+/* KONIEC FIGURA */
+
+/* KWADRAT */
+
 class Kwadrat : public Figura
 {
 public:
@@ -49,6 +61,10 @@ void Kwadrat::id() const
 {
     std::cout << "Typ: Kwadrat,  Pole: " << getPole() << std::endl;
 }
+
+/* KONIEC KWADRAT */
+
+/* KOLO */
 
 class Kolo : public Figura
 {
@@ -68,22 +84,61 @@ void Kolo::id() const
     std::cout << "Typ: Kolo,  Pole: " << getPole() << std::endl;
 }
 
+/* KONIEC KOLO */
+
 void id(const Figura& figura)
 {
     figura.id();
 }
 
-int main()
+/* WEKTOR FIGUR */
+class WektorFigur
 {
-    // BytGeometryczny byt; //Tak nie mozna zrobic. 1
-    // Figura figura; // 2
-    return 0;
+public:
+    WektorFigur() : counter{0}
+    {
+        std::cout << "Konstruktor domyslny - Wektor figur" << std::endl;
+        wektor_figur = new Figura[SIZE];
+    }
+    ~WektorFigur()
+    {
+        std::cout << "Destruktor - Wektor figur" << std::endl;
+        delete[] wektor_figur;
+    }
+
+    Figura* operator[](int) const;
+
+private:
+    Figura* wektor_figur;
+    int     counter;
+};
+
+Figura* WektorFigur::operator[](int i) const
+{
+    if (i < counter)
+        return &wektor_figur[i];
+    else
+        return nullptr;
 }
 
-/* 1
-  Nie udalo sie skompilowac, jesli probowalismy utworzyc obiekt typu BytGeometryczny
-*/
+/* KONIEC WEKTOR FIGUR */
 
-/* 2
-  Rowniez nie udalo sie skompilowac. Trzeba zdefiniowac metode id() dla figury.
+int main()
+{
+    WektorFigur wektor;
+}
+
+/* Po uruchomieniu otrzymanp:
+  Konstruktor domyslny - Wektor figur
+  Konstruktor domyslny - Figura
+  Konstruktor domyslny - Figura
+  Konstruktor domyslny - Figura
+  Konstruktor domyslny - Figura
+  Konstruktor domyslny - Figura
+  Destruktor - Wektor figur
+  Destruktor - Figura
+  Destruktor - Figura
+  Destruktor - Figura
+  Destruktor - Figura
+  Destruktor - Figura
 */
