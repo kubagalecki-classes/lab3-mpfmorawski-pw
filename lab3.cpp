@@ -117,6 +117,7 @@ public:
     void    push(Figura*);
     void    pop();
     Figura* operator[](int) const;
+    void    idWszystkie();
 
 private:
     Figura** wektor_figur;
@@ -143,6 +144,12 @@ void WektorFigur::pop()
         delete wektor_figur[counter - 1];
         counter--;
     }
+}
+
+void WektorFigur::idWszystkie()
+{
+    for (int i = 0; i < counter; i++)
+        wektor_figur[i]->id();
 }
 
 /* KONIEC WEKTOR FIGUR */
@@ -173,26 +180,33 @@ int main()
     FabrykaFigur ff;
 
     wektor.push(ff("kwadrat", 4));
+    wektor.idWszystkie();
     wektor.push(ff("kolo", 3));
+    wektor.idWszystkie();
     wektor.pop();
+    wektor.idWszystkie();
     wektor.push(ff("kwadrat", 2));
+    wektor.idWszystkie();
     wektor.push(ff("kolo", 1));
-
-    wektor[0]->id();
-    wektor[1]->id();
-    wektor[2]->id();
+    wektor.idWszystkie();
 }
 
 /* Po uruchomieniu otrzymano:
   Konstruktor domyslny - Wektor figur
   Konstruktor parametryczny - Figura
   Konstruktor parametryczny - Kwadrat
+  Typ: Kwadrat,  Pole: 16
   Konstruktor parametryczny - Figura
   Konstruktor parametryczny - Kolo
+  Typ: Kwadrat,  Pole: 16
+  Typ: Kolo,  Pole: 28.2743
   Destruktor - Kolo
   Destruktor - Figura
+  Typ: Kwadrat,  Pole: 16
   Konstruktor parametryczny - Figura
   Konstruktor parametryczny - Kwadrat
+  Typ: Kwadrat,  Pole: 16
+  Typ: Kwadrat,  Pole: 4
   Konstruktor parametryczny - Figura
   Konstruktor parametryczny - Kolo
   Typ: Kwadrat,  Pole: 16
