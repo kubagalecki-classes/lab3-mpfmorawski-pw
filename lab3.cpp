@@ -69,32 +69,20 @@ void id(const Figura& figura)
 
 int main()
 {
-    Figura figura{18};
-    figura.id();
-    id(figura);
-    Kwadrat kwadrat{8};
-    kwadrat.id();
-    id(kwadrat);
-    Kolo kolo{1};
-    kolo.id();
-    id(kolo);
+    Figura* f = new Kwadrat{4}; // DYNAMICZNIE TWORZONY KWADRAT
+    std::cout << "Dyn. rzut. na Kwadrat*: " << dynamic_cast< Kwadrat* >(f) << std::endl;
+    std::cout << "Dyn. rzut. na Kolo*: " << dynamic_cast< Kolo* >(f) << std::endl;
+    std::cout << std::endl
+              << "Jezeli obiekt, wskaznik do ktorego rzutujemy nie jest tak naprawde typu, na "
+                 "ktory rzutujemy, to wynikiem rzutowania jest wyzerowany wskaznik (nullptr)."
+              << std::endl;
 }
 
 /* Po uruchomieniu otrzymano
   Konstruktor parametryczny - Figura
-  Typ: Figura,  Pole: 18
-  Typ: Figura,  Pole: 18
-  Konstruktor parametryczny - Figura
   Konstruktor parametryczny - Kwadrat
-  Typ: Kwadrat,  Pole: 64
-  Typ: Kwadrat,  Pole: 64
-  Konstruktor parametryczny - Figura
-  Konstruktor parametryczny - Kolo
-  Typ: Kolo,  Pole: 3.14159
-  Typ: Kolo,  Pole: 3.14159
-  Destruktor - Kolo
-  Destruktor - Figura
-  Destruktor - Kwadrat
-  Destruktor - Figura
-  Destruktor - Figura
+  Dyn. rzut. na Kwadrat*: 0x55756f25be70
+  Dyn. rzut. na Kolo*: 0
+
+  Jezeli obiekt, wskaznik do ktorego rzutujemy nie jest tak naprawde typu, na ktory rzutujemy, to wynikiem rzutowania jest wyzerowany wskaznik (nullptr).
 */
