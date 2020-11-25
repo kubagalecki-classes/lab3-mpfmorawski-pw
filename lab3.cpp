@@ -1,12 +1,18 @@
 #include <iostream>
 #include <math.h>
 
-class Figura
+class BytGeometryczny
+{
+public:
+    virtual void id() const = 0;
+};
+
+class Figura : public BytGeometryczny
 {
 public:
     Figura() : pole{0} { std::cout << "Konstruktor domyslny - Figura" << std::endl; }
     Figura(double p) : pole{p} { std::cout << "Konstruktor parametryczny - Figura" << std::endl; }
-    ~Figura() { std::cout << "Destruktor - Figura" << std::endl; }
+    virtual ~Figura() { std::cout << "Destruktor - Figura" << std::endl; }
 
     virtual void id() const;
 
@@ -34,7 +40,7 @@ public:
     {
         std::cout << "Konstruktor parametryczny - Kwadrat" << std::endl;
     }
-    ~Kwadrat() { std::cout << "Destruktor - Kwadrat" << std::endl; }
+    virtual ~Kwadrat() { std::cout << "Destruktor - Kwadrat" << std::endl; }
 
     void id() const override;
 };
@@ -52,7 +58,7 @@ public:
     {
         std::cout << "Konstruktor parametryczny - Kolo" << std::endl;
     }
-    ~Kolo() { std::cout << "Destruktor - Kolo" << std::endl; }
+    virtual ~Kolo() { std::cout << "Destruktor - Kolo" << std::endl; }
 
     void id() const override;
 };
@@ -69,20 +75,15 @@ void id(const Figura& figura)
 
 int main()
 {
-    Figura* f = new Kwadrat{4}; // DYNAMICZNIE TWORZONY KWADRAT
-    std::cout << "Dyn. rzut. na Kwadrat*: " << dynamic_cast< Kwadrat* >(f) << std::endl;
-    std::cout << "Dyn. rzut. na Kolo*: " << dynamic_cast< Kolo* >(f) << std::endl;
-    std::cout << std::endl
-              << "Jezeli obiekt, wskaznik do ktorego rzutujemy nie jest tak naprawde typu, na "
-                 "ktory rzutujemy, to wynikiem rzutowania jest wyzerowany wskaznik (nullptr)."
-              << std::endl;
+    // BytGeometryczny byt; //Tak nie mozna zrobic. 1
+    // Figura figura; // 2
+    return 0;
 }
 
-/* Po uruchomieniu otrzymano
-  Konstruktor parametryczny - Figura
-  Konstruktor parametryczny - Kwadrat
-  Dyn. rzut. na Kwadrat*: 0x55756f25be70
-  Dyn. rzut. na Kolo*: 0
+/* 1
+  Nie udalo sie skompilowac, jesli probowalismy utworzyc obiekt typu BytGeometryczny
+*/
 
-  Jezeli obiekt, wskaznik do ktorego rzutujemy nie jest tak naprawde typu, na ktory rzutujemy, to wynikiem rzutowania jest wyzerowany wskaznik (nullptr).
+/* 2
+  Rowniez nie udalo sie skompilowac. Trzeba zdefiniowac metode id() dla figury.
 */
