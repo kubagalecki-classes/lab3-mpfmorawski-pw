@@ -69,13 +69,17 @@ void id(const Figura& figura)
 
 int main()
 {
-    Figura figura{18};
-    figura.id();
-    id(figura);
     Kwadrat kwadrat{8};
     kwadrat.id();
-    id(kwadrat);
-    Kolo kolo{1};
-    kolo.id();
-    id(kolo);
+    id(static_cast< Figura >(kwadrat));
 }
+
+/* Po uruchomieniu otrzymano
+  Konstruktor parametryczny - Figura
+  Konstruktor parametryczny - Kwadrat
+  Typ: Kwadrat,  Pole: 64
+  Typ: Figura,  Pole: 64
+  Destruktor - Figura
+  Destruktor - Kwadrat
+  Destruktor - Figura
+*/
