@@ -98,18 +98,23 @@ public:
     WektorFigur() : counter{0}
     {
         std::cout << "Konstruktor domyslny - Wektor figur" << std::endl;
-        wektor_figur = new Figura[SIZE];
+        wektor_figur = new Figura*[SIZE];
     }
     ~WektorFigur()
     {
         std::cout << "Destruktor - Wektor figur" << std::endl;
-        delete[] wektor_figur;
+        if (wektor_figur != nullptr)
+            delete[] wektor_figur;
+
+        // for (int i = 0; i < counter; i++)
+        //     delete &wektor_figur[i];
     }
 
+    void    push(const Figura&);
     Figura* operator[](int) const;
 
 private:
-    Figura* wektor_figur;
+    Figura** wektor_figur;
     int     counter;
 };
 
@@ -121,24 +126,25 @@ Figura* WektorFigur::operator[](int i) const
         return nullptr;
 }
 
+void WektorFigur::push(const Figura& fig)
+{
+    wektor_figur[counter] = fig;
+    counter++;
+}
+
 /* KONIEC WEKTOR FIGUR */
 
 int main()
 {
     WektorFigur wektor;
-}
+    {
+        Kwadrat kwadrat{4};
+        Kolo    kolo{3};
 
-/* Po uruchomieniu otrzymano: 
-  Konstruktor domyslny - Wektor figur
-  Konstruktor domyslny - Figura
-  Konstruktor domyslny - Figura
-  Konstruktor domyslny - Figura
-  Konstruktor domyslny - Figura
-  Konstruktor domyslny - Figura
-  Destruktor - Wektor figur
-  Destruktor - Figura
-  Destruktor - Figura
-  Destruktor - Figura
-  Destruktor - Figura
-  Destruktor - Figura
-*/
+        wektor.push(kwadrat);
+        wektor.push(kolo);
+    }
+
+    wektor[0]->id();
+    wektor[1]->id();
+}
