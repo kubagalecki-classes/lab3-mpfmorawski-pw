@@ -114,6 +114,7 @@ public:
     }
 
     void    push(Figura*);
+    void    pop();
     Figura* operator[](int) const;
 
 private:
@@ -135,7 +136,13 @@ void WektorFigur::push(Figura* fig)
     counter++;
 }
 
-
+void WektorFigur::pop()
+{
+    if (counter > 0) {
+        delete wektor_figur[counter - 1];
+        counter--;
+    }
+}
 
 /* KONIEC WEKTOR FIGUR */
 
@@ -143,12 +150,34 @@ int main()
 {
     WektorFigur wektor;
 
-    Kwadrat* kwptr = new Kwadrat{4};
-    Kolo*    koptr = new Kolo{3};
+    Kwadrat* kwad1ptr = new Kwadrat{4};
+    Kolo*    kolo1ptr = new Kolo{3};
+    Kwadrat* kwad2ptr = new Kwadrat{2};
 
-    wektor.push(kwptr);
-    wektor.push(koptr);
+    wektor.push(kwad1ptr);
+    wektor.push(kolo1ptr);
+    wektor.pop();
+    wektor.push(kwad2ptr);
 
     wektor[0]->id();
     wektor[1]->id();
 }
+
+/* Po uruchomieniu otrzymano:
+  Konstruktor domyslny - Wektor figur
+  Konstruktor parametryczny - Figura
+  Konstruktor parametryczny - Kwadrat
+  Konstruktor parametryczny - Figura
+  Konstruktor parametryczny - Kolo
+  Konstruktor parametryczny - Figura
+  Konstruktor parametryczny - Kwadrat
+  Destruktor - Kolo
+  Destruktor - Figura
+  Typ: Kwadrat,  Pole: 16
+  Typ: Kwadrat,  Pole: 4
+  Destruktor - Wektor figur
+  Destruktor - Kwadrat
+  Destruktor - Figura
+  Destruktor - Kwadrat
+  Destruktor - Figura
+*/
