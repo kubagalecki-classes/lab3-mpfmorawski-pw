@@ -8,7 +8,7 @@ public:
     Figura(double p) : pole{p} { std::cout << "Konstruktor parametryczny - Figura" << std::endl; }
     ~Figura() { std::cout << "Destruktor - Figura" << std::endl; }
 
-    void id() const;
+    virtual void id() const;
 
     double getPole() const;
 
@@ -36,7 +36,7 @@ public:
     }
     ~Kwadrat() { std::cout << "Destruktor - Kwadrat" << std::endl; }
 
-    void id() const;
+    void id() const override;
 };
 
 void Kwadrat::id() const
@@ -54,7 +54,7 @@ public:
     }
     ~Kolo() { std::cout << "Destruktor - Kolo" << std::endl; }
 
-    void id() const;
+    void id() const override;
 };
 
 void Kolo::id() const
@@ -69,17 +69,32 @@ void id(const Figura& figura)
 
 int main()
 {
+    Figura figura{18};
+    figura.id();
+    id(figura);
     Kwadrat kwadrat{8};
     kwadrat.id();
-    id(static_cast< Figura >(kwadrat));
+    id(kwadrat);
+    Kolo kolo{1};
+    kolo.id();
+    id(kolo);
 }
 
 /* Po uruchomieniu otrzymano
   Konstruktor parametryczny - Figura
+  Typ: Figura,  Pole: 18
+  Typ: Figura,  Pole: 18
+  Konstruktor parametryczny - Figura
   Konstruktor parametryczny - Kwadrat
   Typ: Kwadrat,  Pole: 64
-  Typ: Figura,  Pole: 64
+  Typ: Kwadrat,  Pole: 64
+  Konstruktor parametryczny - Figura
+  Konstruktor parametryczny - Kolo
+  Typ: Kolo,  Pole: 3.14159
+  Typ: Kolo,  Pole: 3.14159
+  Destruktor - Kolo
   Destruktor - Figura
   Destruktor - Kwadrat
+  Destruktor - Figura
   Destruktor - Figura
 */
